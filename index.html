@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="De 1 a 100">
+<meta name="theme-color" content="#f3f5fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c1428" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-512.png">
+<link rel="manifest" href="manifest.json">
+<title>De 1 a 100</title>
+<script>try{var t=localStorage.getItem("carteira-tema");if(t&&t!=="auto")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<style>
+/* ---------- Tokens: azulejo (dia) e tinta azul-noite (noite) ---------- */
+:root{
+  --porcelana:#f3f5fa; --branco:#ffffff; --cobalto:#1d3fc4; --cobalto-2:#3b5be0; --tinta:#0f1b3d;
+  --cinza:#6b7590; --cinza-2:#a3abc0; --linha:rgba(15,27,61,.08);
+  --sobe:#0f7a55; --desce:#c23a3a; --aviso:#b26b00;
+  --a-vwce:#1d3fc4; --a-ouro:#c9952b; --a-ndx:#6a4bd6; --a-btc:#e6801f; --a-acoes:#1f7a5a;
+  --bg:var(--porcelana); --surface:var(--branco); --fg:var(--tinta); --muted:var(--cinza); --soft:var(--cinza-2);
+  --accent:var(--cobalto); --track:rgba(15,27,61,.07);
+  --tile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%231d3fc4' stroke-opacity='.11' stroke-width='1.2'%3E%3Cpath d='M28 4c6 8 6 16 0 24-6-8-6-16 0-24zM28 52c-6-8-6-16 0-24 6 8 6 16 0 24zM4 28c8-6 16-6 24 0-8 6-16 6-24 0zM52 28c-8 6-16 6-24 0 8-6 16-6 24 0z'/%3E%3Ccircle cx='28' cy='28' r='3.2'/%3E%3Cpath d='M0 0h56v56H0z' stroke-opacity='.06'/%3E%3C/g%3E%3C/svg%3E");
+  --serif:"New York", ui-serif, "Iowan Old Style", Georgia, serif;
+  --sans:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --round:ui-rounded, "SF Pro Rounded", -apple-system, sans-serif;
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+}
+:root[data-theme="dark"]{
+    --bg:#0c1428; --surface:#141e38; --fg:#eef1fa; --muted:#93a0c2; --soft:#5d6a8f; --linha:rgba(238,241,250,.08);
+    --accent:#7d98ff; --track:rgba(238,241,250,.08);
+    --sobe:#4fd1a1; --desce:#ff8a80; --aviso:#ffc35a;
+    --a-vwce:#7d98ff; --a-ouro:#e9bd5c; --a-ndx:#a993ff; --a-btc:#ffa04d; --a-acoes:#4fc79a;
+    --tile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%237d98ff' stroke-opacity='.10' stroke-width='1.2'%3E%3Cpath d='M28 4c6 8 6 16 0 24-6-8-6-16 0-24zM28 52c-6-8-6-16 0-24 6 8 6 16 0 24zM4 28c8-6 16-6 24 0-8 6-16 6-24 0zM52 28c-8 6-16 6-24 0 8-6 16-6 24 0z'/%3E%3Ccircle cx='28' cy='28' r='3.2'/%3E%3Cpath d='M0 0h56v56H0z' stroke-opacity='.05'/%3E%3C/g%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1428; --surface:#141e38; --fg:#eef1fa; --muted:#93a0c2; --soft:#5d6a8f; --linha:rgba(238,241,250,.08);
+    --accent:#7d98ff; --track:rgba(238,241,250,.08);
+    --sobe:#4fd1a1; --desce:#ff8a80; --aviso:#ffc35a;
+    --a-vwce:#7d98ff; --a-ouro:#e9bd5c; --a-ndx:#a993ff; --a-btc:#ffa04d; --a-acoes:#4fc79a;
+    --tile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%237d98ff' stroke-opacity='.10' stroke-width='1.2'%3E%3Cpath d='M28 4c6 8 6 16 0 24-6-8-6-16 0-24zM28 52c-6-8-6-16 0-24 6 8 6 16 0 24zM4 28c8-6 16-6 24 0-8 6-16 6-24 0zM52 28c-8 6-16 6-24 0 8-6 16-6 24 0z'/%3E%3Ccircle cx='28' cy='28' r='3.2'/%3E%3Cpath d='M0 0h56v56H0z' stroke-opacity='.05'/%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;padding:0 0 calc(var(--safe-b) + 110px)}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
+.fig{font-family:var(--round);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+
+/* ---------- Topo ---------- */
+.top{display:flex;justify-content:space-between;align-items:flex-end;padding:calc(var(--safe-t) + 18px) 0 10px}
+.top .when{font-size:14px;color:var(--muted)}
+.top h1{margin:2px 0 0;font-family:var(--serif);font-weight:600;font-size:30px;letter-spacing:-.01em}
+.round-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--linha);background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.round-btn svg{width:19px;height:19px}
+.round-btn.spin svg{animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- Herói: a viagem de 60 meses ---------- */
+.journey{position:relative;margin:8px -18px 0;padding:22px 18px 16px;background:var(--surface);border-top:1px solid var(--linha);border-bottom:1px solid var(--linha);overflow:hidden}
+.journey::before{content:"";position:absolute;inset:0;background-image:var(--tile);background-size:56px 56px;-webkit-mask-image:linear-gradient(to bottom,transparent 8%,#000 70%);mask-image:linear-gradient(to bottom,transparent 8%,#000 70%);pointer-events:none}
+.journey > *{position:relative}
+.journey .value{font-family:var(--serif);font-weight:500;font-size:52px;line-height:1.02;letter-spacing:-.025em;font-variant-numeric:lining-nums tabular-nums}
+.journey .value .cents{font-size:.5em;color:var(--muted);letter-spacing:0}
+.journey .delta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:15px}
+.delta .up{color:var(--sobe);font-weight:600} .delta .down{color:var(--desce);font-weight:600}
+.delta .muted{color:var(--muted)}
+.example{display:inline-block;margin-left:8px;font-size:12px;font-weight:600;color:var(--aviso);background:color-mix(in srgb,var(--aviso) 14%,transparent);padding:3px 8px;border-radius:20px;vertical-align:middle;font-family:var(--sans);letter-spacing:0}
+.jchart{margin-top:18px}
+.jchart svg{display:block;width:100%;height:auto;overflow:visible}
+.j-plan{fill:none;stroke:var(--soft);stroke-width:1.5;stroke-dasharray:2 5;stroke-linecap:round}
+.j-area{fill:color-mix(in srgb,var(--accent) 14%,transparent)}
+.j-real{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.j-now{fill:var(--accent)} .j-now-ring{fill:none;stroke:var(--accent);stroke-opacity:.3}
+.j-goal{fill:var(--surface);stroke:var(--fg);stroke-width:1.5}
+.j-txt{font-family:var(--sans);font-size:11.5px;fill:var(--muted)}
+.j-txt.b{fill:var(--fg);font-weight:600}
+.j-tick{stroke:var(--linha)}
+.jfoot{display:flex;justify-content:space-between;margin-top:6px;font-size:13px;color:var(--muted)}
+.jfoot b{color:var(--fg);font-weight:600}
+@media (prefers-reduced-motion:no-preference){
+  .j-real{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1.1s cubic-bezier(.6,0,.2,1) .15s forwards}
+  .j-area{opacity:0;animation:fadein .6s ease 1s forwards}
+  .j-now,.j-now-ring{opacity:0;animation:fadein .4s ease 1.15s forwards}
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+
+/* ---------- Secções (listas agrupadas) ---------- */
+.sec{margin-top:30px}
+.sec > h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
+.sec > p.lead{margin:0 0 12px;color:var(--muted);font-size:14.5px}
+.group{background:var(--surface);border-radius:18px;border:1px solid var(--linha);overflow:hidden}
+.item{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:13px 16px}
+.item + .item{border-top:1px solid var(--linha)}
+.item .t{font-weight:600;font-size:15.5px}
+.item .s{font-size:13px;color:var(--muted);margin-top:1px}
+.item .r{text-align:right;font-weight:600}
+.item .r small{display:block;font-weight:500;font-size:12.5px;margin-top:1px}
+.sw{width:10px;height:10px;border-radius:3px;transform:rotate(45deg)}
+.up{color:var(--sobe)} .down{color:var(--desce)} .warn{color:var(--aviso)} .muted{color:var(--muted)}
+
+/* Composição: barra real vs barra alvo */
+.mix{padding:18px 16px 16px}
+.mix .lab{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin:0 0 6px}
+.stack{display:flex;height:16px;border-radius:9px;overflow:hidden;gap:2px;background:var(--track)}
+.stack.target{height:6px;margin-top:10px;border-radius:4px;opacity:.75}
+.stack span{display:block;height:100%}
+.riskline{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;font-size:14px}
+.riskline .big{font-family:var(--serif);font-size:26px;font-weight:500}
+.dev{font-size:12.5px;font-weight:600}
+
+/* Este mês */
+.month{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:16px}
+.chip{border-radius:14px;padding:10px 8px 9px;background:var(--track);text-align:center}
+.chip .n{font-size:12px;color:var(--muted)}
+.chip .v{font-family:var(--round);font-weight:700;font-size:17px;margin-top:2px}
+.chip .bar{height:3px;border-radius:2px;margin:7px auto 0;width:22px}
+.month-note{padding:0 16px 14px;font-size:13px;color:var(--muted)}
+
+/* Bitcoin */
+.btc{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:center;padding:16px}
+.btc svg{width:96px;height:96px}
+.ring-bg{fill:none;stroke:var(--track);stroke-width:9}
+.ring-fg{fill:none;stroke:var(--a-btc);stroke-width:9;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .8s ease}
+.btc .k{font-size:13px;color:var(--muted)}
+.btc .v{font-family:var(--round);font-weight:700;font-size:19px}
+.btc .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btc-msg{padding:0 16px 15px;font-size:13.5px;color:var(--muted);line-height:1.45}
+
+/* Marcos: sequência de anos */
+.miles{padding:6px 16px}
+.mile{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:11px 0;position:relative}
+.mile + .mile{border-top:1px solid var(--linha)}
+.mile .yr{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:var(--track);color:var(--muted)}
+.mile.done .yr{background:var(--accent);color:var(--surface)}
+.mile .t{font-weight:600}
+.mile .s{font-size:12.5px;color:var(--muted)}
+.mile .r{text-align:right;font-family:var(--round);font-weight:700}
+.mile .r small{display:block;font-family:var(--sans);font-weight:500;font-size:12px}
+
+/* Evolução recente */
+.seg{display:inline-flex;background:var(--track);border-radius:10px;padding:3px;gap:2px;margin:0 0 10px}
+.seg button{border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.seg button.on{background:var(--surface);color:var(--fg);box-shadow:0 1px 2px rgba(15,27,61,.12)}
+.lc{padding:16px 12px 10px;position:relative}
+.lc svg{display:block;width:100%;height:auto}
+.l-real{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.l-inv{fill:none;stroke:var(--soft);stroke-width:1.4;stroke-dasharray:3 4}
+.l-plan{fill:none;stroke:var(--a-ouro);stroke-width:1.4}
+.l-area{fill:color-mix(in srgb,var(--accent) 10%,transparent)}
+.l-hov{stroke:var(--muted);stroke-width:1;opacity:0}
+.l-dot{fill:var(--accent);stroke:var(--surface);stroke-width:2;opacity:0}
+.tip{position:absolute;top:4px;pointer-events:none;background:var(--fg);color:var(--bg);border-radius:10px;padding:7px 10px;font-size:12.5px;line-height:1.35;white-space:nowrap;opacity:0;transition:opacity .12s}
+.legend{display:flex;gap:16px;flex-wrap:wrap;padding:0 16px 14px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:0;border-top:2px solid;margin-right:6px;vertical-align:middle}
+
+/* Ativos */
+.logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:12.5px;color:#fff;letter-spacing:-.02em}
+
+/* Formulários */
+.form{padding:6px 16px 16px}
+label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--linha);color:var(--fg);border-radius:12px;padding:12px 13px;font-size:16px;font-family:inherit;appearance:none;-webkit-appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%236b7590' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
+textarea{min-height:92px;font-size:13.5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:600;background:var(--accent);color:#fff;margin-top:16px;cursor:pointer}
+:root[data-theme="dark"] .btn{color:#0c1428}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn{color:#0c1428} }
+.btn.ghost{background:var(--track);color:var(--fg)}
+.btn.danger{background:color-mix(in srgb,var(--desce) 12%,transparent);color:var(--desce)}
+.small{font-size:13px;color:var(--muted);line-height:1.5}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);font-size:14.5px}
+.del{border:0;background:none;color:var(--soft);font-size:13px;padding:2px 0;cursor:pointer}
+
+/* ---------- Barra de separadores flutuante ---------- */
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--safe-b) + 12px);display:flex;gap:4px;padding:6px;border-radius:30px;background:color-mix(in srgb,var(--surface) 78%,transparent);backdrop-filter:blur(22px) saturate(1.6);-webkit-backdrop-filter:blur(22px) saturate(1.6);border:1px solid var(--linha);box-shadow:0 10px 30px rgba(15,27,61,.14);z-index:20}
+nav button{border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;font-weight:600;padding:7px 14px;border-radius:24px;cursor:pointer;min-width:68px}
+nav button svg{width:22px;height:22px}
+nav button.on{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.view{display:none} .view.on{display:block}
+.toast{position:fixed;left:50%;bottom:calc(var(--safe-b) + 92px);transform:translate(-50%,8px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:14px;font-size:14px;opacity:0;transition:opacity .2s,transform .2s;z-index:30;max-width:88vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.foot{text-align:center;color:var(--soft);font-size:12px;margin:26px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div>
+    <div class="when" id="when">—</div>
+    <h1 id="title">A minha carteira</h1>
+  </div>
+  <div style="display:flex;gap:10px">
+  <button class="round-btn" id="themeBtn" aria-label="Tema: automático"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" id="themeIcon"></svg></button>
+  <button class="round-btn" id="refreshBtn" aria-label="Atualizar cotações">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+  </button>
+  </div>
+</header>
+
+<!-- ============ RESUMO ============ -->
+<main class="view on" id="v-resumo">
+  <section class="journey" aria-label="Valor da carteira no percurso de 5 anos">
+    <div class="value" id="total">—</div>
+    <div class="delta" id="delta"></div>
+    <div class="jchart" id="jchart"></div>
+    <div class="jfoot"><span id="jStart">—</span><span id="jEnd">—</span></div>
+  </section>
+
+  <section class="sec">
+    <h2>Composição</h2>
+    <p class="lead" id="mixLead">A barra grossa é a carteira hoje; a fina, o alvo do plano.</p>
+    <div class="group">
+      <div class="mix">
+        <div class="stack" id="stackReal"></div>
+        <div class="stack target" id="stackTarget"></div>
+        <div class="riskline"><span>Parte de risco</span><span><span class="big fig" id="riskNow">—</span> <span class="muted" id="riskTarget"></span></span></div>
+      </div>
+      <div id="mixRows"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Reforço de <span id="nextMonth">—</span></h2>
+    <p class="lead" id="monthLead">Como dividir os 200 € do dia 5.</p>
+    <div class="group">
+      <div class="month" id="monthChips"></div>
+      <div class="month-note" id="monthNote"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Bitcoin</h2>
+    <p class="lead">Regra 8: passa para a cold wallet em dezembro, a partir de <span id="btcLimitTxt">1 000 €</span> na Trade Republic.</p>
+    <div class="group">
+      <div class="btc">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="ring-bg" cx="50" cy="50" r="40"/><circle class="ring-fg" id="btcRing" cx="50" cy="50" r="40" stroke-dasharray="251.3" stroke-dashoffset="251.3"/><text x="50" y="55" text-anchor="middle" class="fig" style="font-size:17px;font-weight:700;fill:var(--fg)" id="btcPct">0%</text></svg>
+        <div class="two">
+          <div><div class="k">Trade Republic</div><div class="v" id="btcTR">—</div></div>
+          <div><div class="k">Cold wallet</div><div class="v" id="btcCold">—</div></div>
+        </div>
+      </div>
+      <div class="btc-msg" id="btcMsg"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Evolução recente</h2>
+    <div class="seg" id="rangeSeg"><button data-r="90">3 meses</button><button data-r="365">1 ano</button><button data-r="0" class="on">Tudo</button></div>
+    <div class="group">
+      <div class="lc" id="lineChart"></div>
+      <div class="legend"><span><i style="border-color:var(--accent)"></i>Carteira</span><span><i style="border-color:var(--soft);border-top-style:dashed"></i>Investido</span><span><i style="border-color:var(--a-ouro)"></i>Plano a 7%</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Marcos</h2>
+    <p class="lead">1 000 € à entrada e 200 € por mês, a crescer 7% ao ano.</p>
+    <div class="group"><div class="miles" id="miles"></div></div>
+  </section>
+  <p class="foot">Não é aconselhamento financeiro. As cotações podem ter atraso.</p>
+</main>
+
+<!-- ============ ATIVOS ============ -->
+<main class="view" id="v-ativos">
+  <section class="sec" style="margin-top:12px">
+    <div class="group" id="assetList"></div>
+  </section>
+  <section class="sec">
+    <h2>De onde vêm as cotações</h2>
+    <div class="group"><div class="form small" id="quoteInfo" style="padding:14px 16px"></div></div>
+  </section>
+</main>
+
+<!-- ============ MOVIMENTOS ============ -->
+<main class="view" id="v-mov">
+  <section class="sec" style="margin-top:12px">
+    <h2>Registar movimento</h2>
+    <div class="group"><div class="form">
+      <label for="fType">Tipo</label>
+      <select id="fType">
+        <option value="buy">Compra</option>
+        <option value="cash">Depósito no pote de ações</option>
+        <option value="transfer">Bitcoin para a cold wallet</option>
+        <option value="sell">Venda</option>
+      </select>
+      <div class="two">
+        <div><label for="fDate">Data</label><input type="date" id="fDate"></div>
+        <div id="fAssetWrap"><label for="fAsset">Ativo</label>
+          <select id="fAsset">
+            <option value="VWCE">VWCE, mundo</option>
+            <option value="PPFB">PPFB, ouro</option>
+            <option value="SXRV">SXRV, Nasdaq 100</option>
+            <option value="BTC">Bitcoin</option>
+            <option value="STK">Ação individual</option>
+          </select>
+        </div>
+      </div>
+      <div id="fStkWrap" hidden>
+        <div class="two">
+          <div><label for="fStkName">Nome</label><input id="fStkName" placeholder="ASML"></div>
+          <div><label for="fStkSym">Símbolo da cotação</label><input id="fStkSym" placeholder="ASML.AMS" autocapitalize="characters"></div>
+        </div>
+        <label for="fStkCur">Moeda</label><select id="fStkCur"><option>EUR</option><option>USD</option></select>
+      </div>
+      <div class="two">
+        <div><label for="fQty" id="fQtyLabel">Quantidade</label><input id="fQty" inputmode="decimal" placeholder="0,00"></div>
+        <div id="fPriceWrap"><label for="fPrice">Preço por unidade (€)</label><input id="fPrice" inputmode="decimal" placeholder="0,00"></div>
+      </div>
+      <div class="two">
+        <div><label for="fFee" id="fFeeLabel">Custos (€)</label><input id="fFee" inputmode="decimal" placeholder="0"></div>
+        <div id="fBrokerWrap"><label for="fBroker">Corretora</label><select id="fBroker"><option>XTB</option><option>Trade Republic</option><option>Outra</option></select></div>
+      </div>
+      <div id="fTxidWrap" hidden><label for="fTxid">TXID da transação</label><input id="fTxid" placeholder="opcional"></div>
+      <button class="btn" id="addTx">Guardar movimento</button>
+    </div></div>
+  </section>
+
+  <section class="sec">
+    <h2>Importar ficheiro</h2>
+    <p class="lead">Uma linha por movimento: data; tipo; ativo; quantidade; preço; custos; corretora.</p>
+    <div class="group"><div class="form">
+      <label for="csvText">Linhas CSV</label>
+      <textarea id="csvText" placeholder="2026-11-24;compra;VWCE;1,6;150,00;0;XTB"></textarea>
+      <label for="csvFile">Ou escolhe um ficheiro</label>
+      <input type="file" id="csvFile" accept=".csv,.txt,text/csv">
+      <button class="btn ghost" id="importCsv">Importar movimentos</button>
+      <button class="btn ghost" id="templateCsv" style="margin-top:8px">Descarregar modelo</button>
+    </div></div>
+  </section>
+
+  <section class="sec">
+    <h2>Histórico</h2>
+    <div class="group" id="txList"></div>
+  </section>
+</main>
+
+<!-- ============ DEFINIÇÕES ============ -->
+<main class="view" id="v-def">
+  <section class="sec" style="margin-top:12px">
+    <h2>Cotações automáticas</h2>
+    <p class="lead">Chave gratuita da Alpha Vantage para os ETFs e ações. O Bitcoin não precisa de chave.</p>
+    <div class="group"><div class="form">
+      <label for="sKey">Chave Alpha Vantage</label>
+      <input id="sKey" placeholder="cola aqui a tua chave" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <div class="two">
+        <div><label for="sSymVWCE">Símbolo VWCE</label><input id="sSymVWCE" autocapitalize="characters"></div>
+        <div><label for="sSymPPFB">Símbolo PPFB</label><input id="sSymPPFB" autocapitalize="characters"></div>
+      </div>
+      <label for="sSymSXRV">Símbolo SXRV</label><input id="sSymSXRV" autocapitalize="characters">
+      <p class="small" style="margin:12px 0 0">Limite grátis de 25 pedidos por dia. A app atualiza no máximo de 30 em 30 minutos.</p>
+      <button class="btn" id="saveSettings">Guardar e atualizar</button>
+    </div></div>
+  </section>
+
+  <section class="sec">
+    <h2>Plano</h2>
+    <div class="group"><div class="form">
+      <div class="two">
+        <div><label for="sMonthly">Reforço mensal (€)</label><input id="sMonthly" inputmode="decimal"></div>
+        <div><label for="sBtcLimit">Limiar da regra 8 (€)</label><input id="sBtcLimit" inputmode="decimal"></div>
+      </div>
+      <div class="two">
+        <div><label for="tVWCE">VWCE (%)</label><input id="tVWCE" inputmode="decimal"></div>
+        <div><label for="tPPFB">Ouro (%)</label><input id="tPPFB" inputmode="decimal"></div>
+        <div><label for="tSXRV">Nasdaq 100 (%)</label><input id="tSXRV" inputmode="decimal"></div>
+        <div><label for="tBTC">Bitcoin (%)</label><input id="tBTC" inputmode="decimal"></div>
+      </div>
+      <label for="tACOES">Ações (%)</label><input id="tACOES" inputmode="decimal">
+      <button class="btn ghost" id="savePlan">Guardar plano</button>
+    </div></div>
+  </section>
+
+  <section class="sec">
+    <h2>Os teus dados</h2>
+    <p class="lead">Ficam só neste iPhone. Exporta uma cópia todos os meses e guarda-a no iCloud Drive.</p>
+    <div class="group"><div class="form">
+      <button class="btn ghost" id="exportJson" style="margin-top:6px">Exportar cópia de segurança</button>
+      <label for="importJson">Restaurar uma cópia</label><input type="file" id="importJson" accept=".json,application/json">
+      <button class="btn danger" id="clearExample">Apagar o exemplo e começar</button>
+      <button class="btn danger" id="resetAll" style="margin-top:8px">Repor tudo</button>
+    </div></div>
+  </section>
+  <p class="foot">Não é aconselhamento financeiro. As cotações podem ter atraso.</p>
+</main>
+</div>
+
+<nav id="tabs" aria-label="Secções">
+  <button class="on" data-v="resumo" aria-label="Resumo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18c4 0 5-6 9-6s5-6 9-8"/><circle cx="21" cy="4" r="1.2" fill="currentColor"/></svg>Resumo</button>
+  <button data-v="ativos" aria-label="Ativos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>Ativos</button>
+  <button data-v="mov" aria-label="Movimentos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"/></svg>Movimentos</button>
+  <button data-v="def" aria-label="Definições"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Definições</button>
+</nav>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+/* ====== Plano v5.3 (30/70) ====== */
+const KEY = "carteira-de-1-a-100-v1";
+const CATS = [
+  {id:"VWCE", name:"Mundo",     full:"Vanguard FTSE All-World", logo:"VW",  v:"--a-vwce"},
+  {id:"PPFB", name:"Ouro",      full:"iShares Physical Gold",   logo:"Au",  v:"--a-ouro"},
+  {id:"SXRV", name:"Nasdaq",    full:"iShares Nasdaq 100",      logo:"NDX", v:"--a-ndx"},
+  {id:"BTC",  name:"Bitcoin",   full:"Bitcoin",                 logo:"₿",   v:"--a-btc"},
+  {id:"ACOES",name:"Ações",     full:"Ações individuais",       logo:"AÇ",  v:"--a-acoes"}
+];
+const col = id => `var(${CATS.find(c=>c.id===id).v})`;
+const DEFAULTS = {
+  settings:{ avKey:"", symbols:{VWCE:"VWCE.DEX", PPFB:"PPFB.DEX", SXRV:"SXRV.DEX"}, monthly:200, btcLimit:1000, planRate:0.07,
+    targets:{VWCE:24, PPFB:6, SXRV:30, BTC:20, ACOES:20} },
+  tx:[], prices:{}, stocks:{}, history:[], example:false, lastFetch:0
+};
+
+/* ====== Utilitários ====== */
+const $ = s => document.querySelector(s);
+const eur = (v,d=0) => (isFinite(v)?v:0).toLocaleString("pt-PT",{style:"currency",currency:"EUR",minimumFractionDigits:d,maximumFractionDigits:d});
+const pct = (v,d=1) => (isFinite(v)?v*100:0).toLocaleString("pt-PT",{minimumFractionDigits:d,maximumFractionDigits:d})+"%";
+const nf = (v,d=4) => (isFinite(v)?v:0).toLocaleString("pt-PT",{maximumFractionDigits:d});
+const num = s => { if(typeof s==="number") return s; s=String(s||"").trim().replace(/\s/g,""); if(!s) return 0;
+  if(s.includes(",")&&s.includes(".")) s = s.lastIndexOf(",")>s.lastIndexOf(".") ? s.replace(/\./g,"").replace(",",".") : s.replace(/,/g,"");
+  else s=s.replace(",","."); const n=parseFloat(s); return isFinite(n)?n:0; };
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const today = () => new Date().toISOString().slice(0,10);
+const uid = () => Math.random().toString(36).slice(2,10);
+const monthName = d => d.toLocaleDateString("pt-PT",{month:"long"});
+const MES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const monYr = d => MES[d.getMonth()]+" "+d.getFullYear();
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2800); }
+
+/* ====== Estado ====== */
+let S;
+function load(){
+  try{ const raw=localStorage.getItem(KEY); if(raw) S=JSON.parse(raw); }catch(e){ S=null; }
+  if(!S){ S=structuredClone(DEFAULTS); seedExample(); }
+  S.settings=Object.assign(structuredClone(DEFAULTS.settings), S.settings||{});
+  S.settings.symbols=Object.assign({},DEFAULTS.settings.symbols,S.settings.symbols||{});
+  S.settings.targets=Object.assign({},DEFAULTS.settings.targets,S.settings.targets||{});
+  for(const k of ["tx","history"]) if(!Array.isArray(S[k])) S[k]=[];
+  for(const k of ["prices","stocks"]) if(!S[k]||typeof S[k]!=="object") S[k]={};
+}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ toast("Este browser não deixou guardar os dados."); } }
+
+function seedExample(){
+  S.example=true;
+  const months=["2026-06","2026-07","2026-08","2026-09","2026-10","2026-11"];
+  const px={VWCE:[132,135,137,139,141,138],PPFB:[60,61,63,62,64,66],SXRV:[1150,1190,1210,1230,1260,1180],BTC:[58000,61000,57000,63000,66000,62000]};
+  months.forEach((m,i)=>{
+    const amt=i===0?1000:200, d=i===0?m+"-24":m+"-05", split={VWCE:.24,PPFB:.06,SXRV:.30,BTC:.20};
+    for(const a in split){ const e=amt*split[a]; S.tx.push({id:uid(),date:d,type:"buy",asset:a,qty:+(e/px[a][i]).toFixed(6),price:px[a][i],fee:0,broker:a==="BTC"?"Trade Republic":"XTB"}); }
+    S.tx.push({id:uid(),date:d,type:"cash",asset:"CASH",qty:amt*.20,price:1,fee:0,broker:"XTB"});
+  });
+  S.stocks["ASML.AMS"]={name:"ASML",cur:"EUR"};
+  S.tx.push({id:uid(),date:"2026-10-10",type:"buy",asset:"STK:ASML.AMS",qty:0.45,price:640,fee:0,broker:"XTB"});
+  const now=Date.now();
+  S.prices={VWCE:{p:138.4,at:now,src:"exemplo"},PPFB:{p:66.1,at:now,src:"exemplo"},SXRV:{p:1182,at:now,src:"exemplo"},BTC:{p:62400,at:now,src:"exemplo"},"ASML.AMS":{p:655,at:now,src:"exemplo"}};
+  S.history=[["2026-06-24",1000,1000],["2026-07-05",1210,1200],["2026-07-20",1236,1200],["2026-08-05",1418,1400],["2026-08-20",1385,1400],["2026-09-05",1620,1600],["2026-09-20",1668,1600],["2026-10-05",1874,1800],["2026-10-20",1912,1800],["2026-11-01",1945,1800],["2026-11-05",2052,2000]].map(([d,v,inv])=>({d,v,inv}));
+}
+
+/* ====== Cálculos ====== */
+function priceOf(key){
+  const p=S.prices[key]; if(p&&p.p>0) return {p:p.p,src:p.src||"",at:p.at||0};
+  const last=[...S.tx].reverse().find(t=>t.type==="buy"&&(t.asset===key||t.asset==="STK:"+key));
+  return {p:last?last.price:0,src:"preço de compra",at:0};
+}
+const fx = cur => cur==="EUR"?1:(S.prices.EURUSD&&S.prices.EURUSD.p?1/S.prices.EURUSD.p:1);
+function compute(){
+  const pos={}; let cash=0, invested=0, cold=0; const flows=[];
+  for(const t of [...S.tx].sort((a,b)=>a.date.localeCompare(b.date))){
+    const q=+t.qty||0, pr=+t.price||0, fee=+t.fee||0;
+    if(t.type==="cash"){ cash+=q; invested+=q; flows.push([t.date,q]); }
+    else if(t.type==="buy"){ const c=q*pr+fee; if(t.asset.startsWith("STK:")) cash-=c; else { invested+=c; flows.push([t.date,c]); }
+      const p=pos[t.asset] ||= {qty:0,cost:0}; p.qty+=q; p.cost+=c; }
+    else if(t.type==="sell"){ const p=pos[t.asset] ||= {qty:0,cost:0}; const avg=p.qty>0?p.cost/p.qty:0; p.qty-=q; p.cost-=avg*q;
+      const r=q*pr-fee; if(t.asset.startsWith("STK:")) cash+=r; else { invested-=r; flows.push([t.date,-r]); } }
+    else if(t.type==="transfer"){ cold+=q-fee; const p=pos.BTC ||= {qty:0,cost:0}; p.qty-=fee; }
+  }
+  const assets=[];
+  for(const key in pos){ const p=pos[key]; if(p.qty<=1e-9&&Math.abs(p.cost)<.01) continue;
+    const isStk=key.startsWith("STK:"), sym=isStk?key.slice(4):key, pi=priceOf(sym), cur=isStk?((S.stocks[sym]||{}).cur||"EUR"):"EUR";
+    assets.push({key,sym,isStk,cat:isStk?"ACOES":key,name:isStk?((S.stocks[sym]||{}).name||sym):CATS.find(c=>c.id===key).full,
+      qty:p.qty,cost:p.cost,price:pi.p,src:pi.src,at:pi.at,cur,value:p.qty*pi.p*(isStk?fx(cur):1)}); }
+  const byCat=Object.fromEntries(CATS.map(c=>[c.id,0])); assets.forEach(a=>byCat[a.cat]+=a.value); byCat.ACOES+=Math.max(cash,0);
+  const total=Object.values(byCat).reduce((a,b)=>a+b,0);
+  const btc=assets.find(a=>a.key==="BTC"), btcQty=btc?btc.qty:0, btcPrice=priceOf("BTC").p;
+  const r=S.settings.planRate, now=Date.now();
+  const plan=flows.reduce((s,[d,a])=>s+a*Math.pow(1+r,Math.max(0,(now-new Date(d))/31557600000)),0);
+  return {assets,byCat,cash,total,invested,plan,flows,btcTR:Math.max(btcQty-cold,0),cold,btcPrice};
+}
+function nextSplit(c){
+  const M=+S.settings.monthly||0, T=c.total, tg=S.settings.targets, w=id=>T>0?c.byCat[id]/T:0;
+  const over=CATS.filter(k=>w(k.id)*100-tg[k.id]>5).map(k=>k.id); const alloc={};
+  if(!over.length) CATS.forEach(k=>alloc[k.id]=M*tg[k.id]/100);
+  else { const el=CATS.filter(k=>!over.includes(k.id)); const need=Object.fromEntries(el.map(k=>[k.id,Math.max(0,tg[k.id]/100*(T+M)-c.byCat[k.id])]));
+    const sn=Object.values(need).reduce((a,b)=>a+b,0), st=el.reduce((a,k)=>a+tg[k.id],0);
+    CATS.forEach(k=>alloc[k.id]=over.includes(k.id)?0:(sn>0?M*need[k.id]/sn:M*tg[k.id]/st)); }
+  const ids=CATS.map(k=>k.id), out=Object.fromEntries(ids.map(i=>[i,Math.floor(alloc[i])]));
+  let rest=Math.round(M)-Object.values(out).reduce((a,b)=>a+b,0);
+  ids.slice().sort((a,b)=>(alloc[b]%1)-(alloc[a]%1)).forEach(i=>{ if(rest>0){out[i]++;rest--;} });
+  return {alloc:out,over};
+}
+const planPath = (months, start=1000, m=200, r=.07) => { const g=(1+r)**(1/12)-1; const out=[start]; let v=start; for(let i=1;i<=months;i++){ v=v*(1+g)+m; out.push(v);} return out; };
+
+/* ====== Desenho ====== */
+function render(){
+  const c=compute();
+  const last=Math.max(0,...Object.values(S.prices).map(p=>p.at||0));
+  $("#when").textContent = last ? "Atualizado " + new Date(last).toLocaleString("pt-PT",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).replace(".","") : "Ainda sem cotações";
+  recordSnapshot(c); hero(c); mix(c); month(c); bitcoin(c); line(c); miles(c); assets(c); txs(); fillSettings();
+}
+function recordSnapshot(c){ if(!(c.total>0)) return; const d=today(), h=S.history, i=h.findIndex(x=>x.d===d), pt={d,v:+c.total.toFixed(2),inv:+c.invested.toFixed(2)};
+  if(i>=0) h[i]=pt; else { h.push(pt); h.sort((a,b)=>a.d.localeCompare(b.d)); } save(); }
+
+function hero(c){
+  const [int,dec] = c.total.toFixed(2).split(".");
+  $("#total").innerHTML = `${Number(int).toLocaleString("pt-PT")}<span class="cents">,${dec} €</span>` + (S.example?`<span class="example">exemplo</span>`:"");
+  const g=c.total-c.invested, gp=c.invested>0?g/c.invested:0, vp=c.total-c.plan;
+  $("#delta").innerHTML = `<span class="${g>=0?"up":"down"}">${g>=0?"+":"−"}${eur(Math.abs(g),2)} (${g>=0?"+":"−"}${pct(Math.abs(gp),1)})</span>
+    <span class="muted">sobre ${eur(c.invested)} investidos</span>
+    <span class="${vp>=0?"up":"down"}">${vp>=0?"+":"−"}${eur(Math.abs(vp))} face ao plano</span>`;
+  // viagem de 60 meses
+  const el=$("#jchart"); const W=Math.max(320,el.clientWidth||340), H=168, padT=26, padB=22;
+  const start = c.flows.length ? new Date(c.flows[0][0]) : new Date();
+  const s0 = new Date(start.getFullYear(), start.getMonth(), 1);
+  const end = new Date(s0); end.setFullYear(end.getFullYear()+5);
+  const plan = planPath(60, 1000, +S.settings.monthly||200, S.settings.planRate);
+  const yMax = Math.max(plan[60], ...S.history.map(h=>h.v), c.total)*1.04;
+  const mIdx = d => (new Date(d) - s0) / (end - s0) * 60;
+  const X = m => 6 + (W-12) * (m/60), Y = v => padT + (H-padT-padB) * (1 - v/yMax);
+  const pPath = plan.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+","+Y(v).toFixed(1)).join("");
+  const hist = S.history.filter(h=>new Date(h.d)>=s0);
+  const pts = hist.map(h=>[X(Math.max(0,mIdx(h.d))),Y(h.v)]);
+  if(pts.length===0) pts.push([X(0),Y(c.total)]);
+  const rPath = pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join("");
+  const aPath = rPath + `L${pts[pts.length-1][0].toFixed(1)},${H-padB}L${pts[0][0].toFixed(1)},${H-padB}Z`;
+  let len=0; for(let i=1;i<pts.length;i++) len+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);
+  const now=pts[pts.length-1], monthNow=Math.min(60,Math.max(1,Math.ceil(mIdx(new Date()))));
+  const ticks=[12,24,36,48].map(m=>`<line class="j-tick" x1="${X(m)}" x2="${X(m)}" y1="${H-padB}" y2="${H-padB+5}"/><text class="j-txt" x="${X(m)}" y="${H-4}" text-anchor="middle">ano ${m/12}</text>`).join("");
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Percurso de 5 anos: estás no mês ${monthNow} de 60">
+    <line class="j-tick" x1="6" x2="${W-6}" y1="${H-padB}" y2="${H-padB}"/>${ticks}
+    <path class="j-plan" d="${pPath}"/>
+    <path class="j-area" d="${aPath}"/>
+    <path class="j-real" d="${rPath}" style="--len:${Math.ceil(len)+2}"/>
+    <circle class="j-now-ring" cx="${now[0]}" cy="${now[1]}" r="11" stroke-width="7"/>
+    <circle class="j-now" cx="${now[0]}" cy="${now[1]}" r="5"/>
+    <text class="j-txt b" x="${Math.min(now[0]+14, W-120)}" y="${now[1]-12}">mês ${monthNow} de 60</text>
+    <circle class="j-goal" cx="${X(60)}" cy="${Y(plan[60])}" r="5"/>
+    <text class="j-txt b" x="${X(60)-10}" y="${Y(plan[60])-12}" text-anchor="end">${eur(plan[60])}</text>
+  </svg>`;
+  $("#jStart").innerHTML = `Início <b>${monYr(s0)}</b>`;
+  $("#jEnd").innerHTML = `Meta a 7% <b>${monYr(end)}</b>`;
+}
+
+function mix(c){
+  const T=c.total||1, tg=S.settings.targets;
+  $("#stackReal").innerHTML = CATS.map(k=>`<span style="flex:${Math.max(c.byCat[k.id],0)/T};background:${col(k.id)}" title="${esc(k.name)}"></span>`).join("");
+  $("#stackTarget").innerHTML = CATS.map(k=>`<span style="flex:${tg[k.id]};background:${col(k.id)}"></span>`).join("");
+  const risk=(c.byCat.SXRV+c.byCat.BTC+c.byCat.ACOES)/T;
+  $("#riskNow").textContent = Math.round(risk*100)+"%"; $("#riskTarget").textContent = "alvo "+(tg.SXRV+tg.BTC+tg.ACOES)+"%";
+  let warn=[];
+  $("#mixRows").innerHTML = CATS.map(k=>{ const w=c.byCat[k.id]/T*100, d=w-tg[k.id]; if(d>5) warn.push(k.name);
+    const cls=Math.abs(d)>5?(d>0?"down":"warn"):"muted";
+    return `<div class="item"><span class="sw" style="background:${col(k.id)}"></span>
+      <div><div class="t">${esc(k.name)}</div><div class="s">${eur(c.byCat[k.id])}</div></div>
+      <div class="r fig">${w.toFixed(1).replace(".",",")}%<small class="dev ${cls}">${d>=0?"+":"−"}${Math.abs(d).toFixed(1).replace(".",",")} face aos ${tg[k.id]}%</small></div></div>`; }).join("");
+  $("#mixLead").textContent = warn.length ? `${warn.join(" e ")} passou mais de 5 pontos o alvo: o próximo reforço vai para o que está abaixo.` : "A barra grossa é a carteira hoje; a fina, o alvo do plano. Tudo dentro de 5 pontos.";
+  $("#mixLead").className = "lead" + (warn.length?" warn":"");
+}
+
+function month(c){
+  const {alloc,over}=nextSplit(c);
+  const n=new Date(), next=new Date(n.getFullYear(), n.getMonth()+(n.getDate()>5?1:0), 5);
+  $("#nextMonth").textContent = monthName(next);
+  $("#monthLead").textContent = `Como dividir os ${eur(+S.settings.monthly||0)} de dia 5 de ${monthName(next)}.`;
+  $("#monthChips").innerHTML = CATS.map(k=>`<div class="chip"><div class="n">${esc(k.name)}</div><div class="v">${alloc[k.id]}</div><div class="bar" style="background:${col(k.id)}"></div></div>`).join("");
+  $("#monthNote").textContent = over.length
+    ? `Ajustado pela regra 2: este mês nada para ${over.map(i=>CATS.find(k=>k.id===i).name).join(" e ")}. Mundo, ouro e Nasdaq no plano da XTB; Bitcoin no plano da Trade Republic; ações no pote da XTB.`
+    : "Divisão normal. Mundo, ouro e Nasdaq no plano da XTB; Bitcoin no plano da Trade Republic; ações no pote da XTB.";
+}
+
+function bitcoin(c){
+  const lim=+S.settings.btcLimit||1000, tr=c.btcTR*c.btcPrice, cold=c.cold*c.btcPrice, f=Math.min(1,tr/lim);
+  $("#btcLimitTxt").textContent = eur(lim);
+  $("#btcTR").textContent = eur(tr); $("#btcCold").textContent = eur(cold);
+  $("#btcRing").style.strokeDashoffset = (251.3*(1-f)).toFixed(1);
+  $("#btcPct").textContent = Math.round(f*100)+"%";
+  const dec=new Date().getMonth()===11;
+  $("#btcMsg").textContent = tr>=lim
+    ? (dec ? "Está na altura: faz a transferência anual. Envia primeiro um valor pequeno, confirma o endereço no ecrã da cold wallet e regista o TXID em Movimentos." : `Já passaste os ${eur(lim)}. A transferência fica para dezembro.`)
+    : `Faltam ${eur(lim-tr)}. Tens ${nf(c.btcTR,6)} BTC na Trade Republic e ${nf(c.cold,6)} BTC na cold wallet.`;
+}
+
+let range=0;
+function line(c){
+  const el=$("#lineChart"); let pts=S.history.slice();
+  if(range>0){ const lim=new Date(Date.now()-range*864e5).toISOString().slice(0,10); pts=pts.filter(p=>p.d>=lim); }
+  if(pts.length<2){ el.innerHTML='<div class="empty">O gráfico começa no segundo dia com cotações.</div>'; return; }
+  const r=S.settings.planRate, planAt=d=>c.flows.reduce((s,[fd,a])=>fd<=d?s+a*Math.pow(1+r,(new Date(d)-new Date(fd))/31557600000):s,0);
+  const W=Math.max(300,el.clientWidth-24||320), H=170, pt=12, pb=22;
+  const xs=pts.map(p=>+new Date(p.d)), x0=Math.min(...xs), x1=Math.max(...xs), plans=pts.map(p=>planAt(p.d));
+  const vals=pts.map(p=>p.v), invs=pts.map(p=>p.inv), all=[...vals,...invs,...plans];
+  let y0=Math.min(...all), y1=Math.max(...all); const pad=(y1-y0)*.12||10; y0-=pad; y1+=pad;
+  const X=t=>4+(W-8)*((t-x0)/((x1-x0)||1)), Y=v=>pt+(H-pt-pb)*(1-(v-y0)/((y1-y0)||1));
+  const P=a=>a.map((v,i)=>(i?"L":"M")+X(xs[i]).toFixed(1)+","+Y(v).toFixed(1)).join("");
+  const area=P(vals)+`L${X(xs.at(-1)).toFixed(1)},${H-pb}L${X(xs[0]).toFixed(1)},${H-pb}Z`;
+  const lb=t=>new Date(t).toLocaleDateString("pt-PT",{day:"numeric",month:"short"}).replace(".","");
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolução recente da carteira">
+    <path class="l-area" d="${area}"/><path class="l-inv" d="${P(invs)}"/><path class="l-plan" d="${P(plans)}"/><path class="l-real" d="${P(vals)}"/>
+    <text class="j-txt" x="4" y="${H-5}">${lb(x0)}</text><text class="j-txt" x="${W-4}" y="${H-5}" text-anchor="end">${lb(x1)}</text>
+    <line class="l-hov" id="hv" y1="${pt}" y2="${H-pb}"/><circle class="l-dot" id="hd" r="4.5"/><rect id="hit" width="${W}" height="${H}" fill="transparent"/></svg><div class="tip" id="tip"></div>`;
+  const svg=el.querySelector("svg"), tip=el.querySelector("#tip"), hv=el.querySelector("#hv"), hd=el.querySelector("#hd");
+  const move=ev=>{ const rc=svg.getBoundingClientRect(), cx=((ev.touches?ev.touches[0].clientX:ev.clientX)-rc.left)*(W/rc.width);
+    let bi=0,bd=1e18; xs.forEach((t,i)=>{const d=Math.abs(X(t)-cx); if(d<bd){bd=d;bi=i;}});
+    const xx=X(xs[bi]); hv.setAttribute("x1",xx); hv.setAttribute("x2",xx); hv.style.opacity=.5; hd.setAttribute("cx",xx); hd.setAttribute("cy",Y(vals[bi])); hd.style.opacity=1;
+    tip.innerHTML=`<b>${esc(new Date(pts[bi].d).toLocaleDateString("pt-PT",{day:"numeric",month:"long"}))}</b><br>${eur(vals[bi],2)}<br><span style="opacity:.7">investido ${eur(invs[bi])}, plano ${eur(plans[bi])}</span>`;
+    tip.style.opacity=1; const px=xx*(rc.width/W)+12, tw=tip.offsetWidth; tip.style.left=Math.min(Math.max(px-tw/2,8),rc.width+24-tw-8)+"px"; };
+  const leave=()=>{ tip.style.opacity=0; hv.style.opacity=0; hd.style.opacity=0; };
+  const hit=el.querySelector("#hit"); hit.addEventListener("mousemove",move); hit.addEventListener("touchstart",move,{passive:true}); hit.addEventListener("touchmove",move,{passive:true});
+  hit.addEventListener("mouseleave",leave); hit.addEventListener("touchend",()=>setTimeout(leave,1600));
+}
+
+function miles(c){
+  const first=c.flows.length?new Date(c.flows[0][0]):new Date(), path=planPath(60,1000,+S.settings.monthly||200,S.settings.planRate), now=new Date();
+  $("#miles").innerHTML=[1,2,3,4,5].map(y=>{ const d=new Date(first); d.setFullYear(d.getFullYear()+y); const v=path[12*y], inv=1000+(+S.settings.monthly||200)*12*y;
+    const done=d<=now, hit=c.total>=v;
+    return `<div class="mile ${done?"done":""}"><div class="yr">${y}</div><div><div class="t">${monYr(d)}</div><div class="s">${eur(inv)} investidos</div></div>
+      <div class="r">${eur(v)}${done?`<small class="${hit?"up":"down"}">${hit?"atingido":"abaixo"}</small>`:""}</div></div>`; }).join("");
+}
+
+function assets(c){
+  const list=c.assets.slice().sort((a,b)=>b.value-a.value);
+  let h=list.map(a=>{ const k=CATS.find(x=>x.id===a.cat), g=a.value-a.cost, gp=a.cost>0?g/a.cost:0;
+    const when=a.at?new Date(a.at).toLocaleString("pt-PT",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).replace(".",""):"";
+    return `<div class="item"><div class="logo" style="background:${col(a.cat)}">${esc(a.isStk?a.sym.split(".")[0].slice(0,4):k.logo)}</div>
+      <div><div class="t">${esc(a.name)}</div><div class="s">${nf(a.qty,a.key==="BTC"?6:4)} a ${a.isStk&&a.cur!=="EUR"?esc(a.cur)+" ":""}${a.price.toLocaleString("pt-PT",{maximumFractionDigits:2})}${a.isStk&&a.cur!=="EUR"?"":" €"}</div><div class="s">${esc(a.src)}${when?", "+esc(when):""}</div></div>
+      <div class="r fig">${eur(a.value,2)}<small class="${g>=0?"up":"down"}">${g>=0?"+":"−"}${eur(Math.abs(g),2)} (${pct(Math.abs(gp))})</small></div></div>`; }).join("");
+  if(c.cash>.004) h+=`<div class="item"><div class="logo" style="background:var(--a-acoes)">€</div><div><div class="t">Pote de ações</div><div class="s">Liquidez na XTB à espera de ações</div></div><div class="r fig">${eur(c.cash,2)}</div></div>`;
+  $("#assetList").innerHTML=h||'<div class="empty">Ainda não há ativos. Regista a primeira compra em Movimentos.</div>';
+  $("#quoteInfo").innerHTML=(S.settings.avKey?"Chave Alpha Vantage configurada.":"Ainda sem chave Alpha Vantage: os ETFs e ações usam o último preço de compra até a pores em Definições.")+
+    "<br><br>ETFs e ações: Alpha Vantage, com possível atraso de 15 minutos ou mais. Bitcoin: CoinGecko. Câmbio do dólar: Banco Central Europeu.";
+}
+
+function txs(){
+  const lbl={buy:"Compra",cash:"Depósito no pote",transfer:"Bitcoin para a cold wallet",sell:"Venda"};
+  const nm=a=>a==="CASH"?"Ações":a.startsWith("STK:")?((S.stocks[a.slice(4)]||{}).name||a.slice(4)):(CATS.find(k=>k.id===a)||{name:a}).name;
+  const list=[...S.tx].sort((a,b)=>b.date.localeCompare(a.date));
+  $("#txList").innerHTML=list.length?list.map(t=>{
+    const cat=t.asset==="CASH"?"ACOES":t.asset.startsWith("STK:")?"ACOES":t.asset;
+    const amt=t.type==="transfer"?nf(t.qty,6)+" BTC":eur(t.type==="cash"?t.qty:t.qty*t.price+(t.type==="sell"?-t.fee:t.fee),2);
+    const det=(t.type==="buy"||t.type==="sell")?`${nf(t.qty,6)} a ${(+t.price).toLocaleString("pt-PT",{maximumFractionDigits:2})} €, `:"";
+    return `<div class="item"><span class="sw" style="background:${col(cat)}"></span>
+      <div><div class="t">${esc(lbl[t.type])}, ${esc(nm(t.asset))}</div><div class="s">${det}${esc(new Date(t.date).toLocaleDateString("pt-PT",{day:"numeric",month:"short",year:"numeric"}).replace(".",""))}, ${esc(t.broker||"")}${t.txid?", TXID "+esc(String(t.txid).slice(0,8))+"…":""}</div></div>
+      <div class="r fig">${amt}<small><button class="del" data-del="${esc(t.id)}">Apagar</button></small></div></div>`; }).join("")
+    :'<div class="empty">Ainda sem movimentos. Regista a primeira compra acima.</div>';
+}
+
+function fillSettings(){
+  if(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#v-def")) return;
+  const s=S.settings; $("#sKey").value=s.avKey||""; $("#sSymVWCE").value=s.symbols.VWCE; $("#sSymPPFB").value=s.symbols.PPFB; $("#sSymSXRV").value=s.symbols.SXRV;
+  $("#sMonthly").value=s.monthly; $("#sBtcLimit").value=s.btcLimit; for(const k of ["VWCE","PPFB","SXRV","BTC","ACOES"]) $("#t"+k).value=s.targets[k];
+}
+
+/* ====== Cotações ====== */
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function getJSON(u){ const r=await fetch(u,{cache:"no-store"}); if(!r.ok) throw new Error(r.status); return r.json(); }
+async function refreshPrices(force){
+  if(!force&&Date.now()-(S.lastFetch||0)<30*60*1000) return;
+  const b=$("#refreshBtn"); b.classList.add("spin"); const errs=[];
+  try{ const j=await getJSON("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur"); if(j.bitcoin&&j.bitcoin.eur) S.prices.BTC={p:j.bitcoin.eur,at:Date.now(),src:"CoinGecko"}; }catch(e){ errs.push("Bitcoin"); }
+  const stocks=Object.keys(S.stocks);
+  if(stocks.some(s=>(S.stocks[s].cur||"EUR")!=="EUR")){ try{ const j=await getJSON("https://api.frankfurter.app/latest?from=EUR&to=USD"); if(j.rates&&j.rates.USD) S.prices.EURUSD={p:j.rates.USD,at:Date.now(),src:"BCE"}; }catch(e){ errs.push("câmbio"); } }
+  if(S.settings.avKey){
+    const held=new Set(compute().assets.map(a=>a.key));
+    const jobs=["VWCE","PPFB","SXRV"].filter(k=>held.has(k)).map(k=>[k,S.settings.symbols[k]]).concat(stocks.filter(s=>held.has("STK:"+s)).map(s=>[s,s]));
+    for(const [key,sym] of jobs){
+      try{ const j=await getJSON("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="+encodeURIComponent(sym)+"&apikey="+encodeURIComponent(S.settings.avKey));
+        const q=j["Global Quote"], p=q&&parseFloat(q["05. price"]);
+        if(p>0) S.prices[key]={p,at:Date.now(),src:"Alpha Vantage"};
+        else { errs.push(sym+(j.Note||j.Information?" (limite diário atingido)":" (símbolo não encontrado)")); if(j.Note||j.Information) break; } }
+      catch(e){ errs.push(sym); }
+      await sleep(1300);
+    }
+  }
+  S.lastFetch=Date.now(); save(); b.classList.remove("spin"); render();
+  toast(errs.length?"Sem cotação nova para: "+errs.join(", "):"Cotações atualizadas");
+}
+
+/* ====== Movimentos ====== */
+function txFromForm(){
+  const type=$("#fType").value, date=$("#fDate").value||today();
+  let asset=type==="cash"?"CASH":type==="transfer"?"BTC":$("#fAsset").value;
+  if(asset==="STK"){ const sym=$("#fStkSym").value.trim().toUpperCase(), name=$("#fStkName").value.trim()||sym; if(!sym) throw new Error("Falta o símbolo da ação."); S.stocks[sym]={name,cur:$("#fStkCur").value}; asset="STK:"+sym; }
+  const qty=num($("#fQty").value), price=type==="cash"||type==="transfer"?1:num($("#fPrice").value), fee=num($("#fFee").value);
+  if(!(qty>0)) throw new Error(type==="cash"?"Falta o montante.":"Falta a quantidade.");
+  if((type==="buy"||type==="sell")&&!(price>0)) throw new Error("Falta o preço por unidade.");
+  return {id:uid(),date,type,asset,qty,price,fee,broker:type==="transfer"?"Trade Republic":$("#fBroker").value,txid:type==="transfer"?$("#fTxid").value.trim():undefined};
+}
+function syncForm(){
+  const t=$("#fType").value;
+  $("#fAssetWrap").hidden=t==="cash"||t==="transfer"; $("#fStkWrap").hidden=!((t==="buy"||t==="sell")&&$("#fAsset").value==="STK");
+  $("#fPriceWrap").hidden=t==="cash"||t==="transfer"; $("#fTxidWrap").hidden=t!=="transfer"; $("#fBrokerWrap").hidden=t==="transfer";
+  $("#fQtyLabel").textContent=t==="cash"?"Montante (€)":t==="transfer"?"BTC enviado":"Quantidade";
+  $("#fFeeLabel").textContent=t==="transfer"?"Taxa da rede (BTC)":"Custos (€)";
+}
+function parseCSV(text){
+  const out=[], errs=[], tmap={compra:"buy",buy:"buy",deposito:"cash","depósito":"cash",cash:"cash",transferencia:"transfer","transferência":"transfer",transfer:"transfer",venda:"sell",sell:"sell"};
+  text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).forEach((line,i)=>{
+    const f=line.split(line.includes(";")?";":",").map(x=>x.trim().replace(/^"|"$/g,"")); if(i===0&&/data|date/i.test(f[0])) return;
+    const [d,tipo,ativo,q,p,fee,broker]=f, type=tmap[(tipo||"").toLowerCase()];
+    const date=/^\d{4}-\d{2}-\d{2}$/.test(d)?d:(/^(\d{2})[\/.-](\d{2})[\/.-](\d{4})$/.test(d)?d.replace(/^(\d{2})[\/.-](\d{2})[\/.-](\d{4})$/,"$3-$2-$1"):null);
+    if(!type||!date){ errs.push(i+1); return; }
+    let asset=type==="cash"?"CASH":type==="transfer"?"BTC":(ativo||"").toUpperCase();
+    if(type==="buy"||type==="sell"){ if(!["VWCE","PPFB","SXRV","BTC"].includes(asset)){ if(!asset){errs.push(i+1);return;} S.stocks[asset] ||= {name:asset,cur:"EUR"}; asset="STK:"+asset; } }
+    const qty=num(q), price=type==="cash"||type==="transfer"?1:num(p);
+    if(!(qty>0)||((type==="buy"||type==="sell")&&!(price>0))){ errs.push(i+1); return; }
+    out.push({id:uid(),date,type,asset,qty,price,fee:num(fee),broker:broker||(asset==="BTC"?"Trade Republic":"XTB")});
+  });
+  return {out,errs};
+}
+function download(name,text,mime){ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type:mime})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500); }
+
+/* ====== Eventos ====== */
+function bind(){
+  const titles={resumo:"A minha carteira",ativos:"Ativos",mov:"Movimentos",def:"Definições"};
+  document.querySelectorAll("#tabs button").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll("#tabs button").forEach(x=>x.classList.toggle("on",x===b));
+    document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+b.dataset.v));
+    $("#title").textContent=titles[b.dataset.v]; window.scrollTo({top:0}); if(b.dataset.v==="resumo") render();
+  }));
+  $("#rangeSeg").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; range=+b.dataset.r; document.querySelectorAll("#rangeSeg button").forEach(x=>x.classList.toggle("on",x===b)); line(compute()); });
+  $("#refreshBtn").addEventListener("click",()=>refreshPrices(true));
+  ["#fType","#fAsset"].forEach(s=>$(s).addEventListener("change",syncForm)); $("#fDate").value=today(); syncForm();
+  $("#addTx").addEventListener("click",()=>{ try{ S.tx.push(txFromForm()); save(); render(); toast("Movimento guardado"); ["#fQty","#fPrice","#fFee","#fTxid"].forEach(s=>$(s).value=""); }catch(e){ toast(e.message); } });
+  $("#txList").addEventListener("click",e=>{ const id=e.target.dataset&&e.target.dataset.del; if(!id) return; if(confirm("Apagar este movimento?")){ S.tx=S.tx.filter(t=>t.id!==id); save(); render(); toast("Movimento apagado"); } });
+  $("#csvFile").addEventListener("change",async e=>{ const f=e.target.files[0]; if(f) $("#csvText").value=await f.text(); });
+  $("#importCsv").addEventListener("click",()=>{ const {out,errs}=parseCSV($("#csvText").value); if(out.length){ S.tx.push(...out); save(); render(); $("#csvText").value=""; }
+    toast(`${out.length} movimento(s) importado(s)`+(errs.length?`. Linhas por corrigir: ${errs.join(", ")}`:"")); });
+  $("#templateCsv").addEventListener("click",()=>download("modelo-movimentos.csv","data;tipo;ativo;quantidade;preço;custos;corretora\n2026-11-24;compra;VWCE;1,700000;141,20;0;XTB\n2026-11-24;compra;BTC;0,003000;66000;0;Trade Republic\n2026-11-24;deposito;;200;;0;XTB\n2027-12-10;transferencia;BTC;0,015;;0,00002;Trade Republic\n","text/csv"));
+  $("#saveSettings").addEventListener("click",()=>{ const s=S.settings; s.avKey=$("#sKey").value.trim();
+    s.symbols={VWCE:$("#sSymVWCE").value.trim().toUpperCase()||"VWCE.DEX",PPFB:$("#sSymPPFB").value.trim().toUpperCase()||"PPFB.DEX",SXRV:$("#sSymSXRV").value.trim().toUpperCase()||"SXRV.DEX"};
+    save(); document.activeElement.blur(); refreshPrices(true); });
+  $("#savePlan").addEventListener("click",()=>{ const s=S.settings; s.monthly=num($("#sMonthly").value)||200; s.btcLimit=num($("#sBtcLimit").value)||1000;
+    const t={}; let sum=0; for(const k of ["VWCE","PPFB","SXRV","BTC","ACOES"]){ t[k]=num($("#t"+k).value); sum+=t[k]; }
+    if(Math.abs(sum-100)>.01){ toast(`Os alvos somam ${sum}%. Têm de somar 100%.`); return; }
+    s.targets=t; save(); document.activeElement.blur(); render(); toast("Plano guardado"); });
+  $("#exportJson").addEventListener("click",()=>download("carteira-copia-"+today()+".json",JSON.stringify(S,null,2),"application/json"));
+  $("#importJson").addEventListener("change",async e=>{ const f=e.target.files[0]; if(!f) return;
+    try{ const j=JSON.parse(await f.text()); if(!j||!Array.isArray(j.tx)) throw 0; try{localStorage.setItem(KEY,JSON.stringify(j));}catch(_){} load(); render(); toast("Cópia restaurada"); }catch(_){ toast("Este ficheiro não é uma cópia da app."); } });
+  $("#clearExample").addEventListener("click",()=>{ if(!confirm("Apagar os dados de exemplo? A chave, os símbolos e o plano ficam.")) return;
+    S.tx=[]; S.history=[]; S.prices={}; S.stocks={}; S.example=false; S.lastFetch=0; save(); render(); toast("Exemplo apagado. Regista a primeira compra em Movimentos."); });
+  $("#resetAll").addEventListener("click",()=>{ if(!confirm("Repor tudo, incluindo a chave e o plano?")) return; try{localStorage.removeItem(KEY);}catch(e){} location.reload(); });
+  let rt; window.addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(()=>{ const c=compute(); hero(c); line(c); },150); });
+  document.addEventListener("visibilitychange",()=>{ if(!document.hidden) refreshPrices(false); });
+}
+
+
+/* ====== Tema: automático, claro ou escuro ====== */
+const THEME_KEY="carteira-tema";
+const ICONS={
+  auto:'<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/>',
+  light:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+  dark:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'
+};
+const THEME_NAME={auto:"automático (segue o iPhone)",light:"fundo branco",dark:"fundo escuro"};
+function getTheme(){ try{ return localStorage.getItem(THEME_KEY)||"auto"; }catch(e){ return "auto"; } }
+function applyTheme(t){
+  if(t==="auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme",t);
+  const dark = t==="dark" || (t==="auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m=>m.setAttribute("content", dark?"#0c1428":"#f3f5fa"));
+  const ic=document.getElementById("themeIcon"), b=document.getElementById("themeBtn");
+  if(ic){ ic.innerHTML=ICONS[t]; b.setAttribute("aria-label","Tema: "+THEME_NAME[t]); }
+}
+applyTheme(getTheme());
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  const order=["auto","light","dark"], t=order[(order.indexOf(getTheme())+1)%3];
+  try{ localStorage.setItem(THEME_KEY,t); }catch(e){}
+  applyTheme(t); toast("Tema: "+THEME_NAME[t]);
+});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>applyTheme(getTheme()));
+
+load(); bind(); render(); refreshPrices(false);
+if("serviceWorker" in navigator&&location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
